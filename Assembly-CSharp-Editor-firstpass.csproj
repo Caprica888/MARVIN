@@ -138,6 +138,9 @@
  <Reference Include="System.Threading">
  <HintPath>C:/Users/Julia/OneDrive/Projects/MARVIN/Assets/Plugins/GitHub/Editor/System.Threading.dll</HintPath>
  </Reference>
+ <Reference Include="Valve.Newtonsoft.Json">
+ <HintPath>C:/Users/Julia/OneDrive/Projects/MARVIN/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
@@ -158,9 +161,6 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
- </Reference>
- <Reference Include="Valve.Newtonsoft.Json">
- <HintPath>C:/Users/Julia/OneDrive/Projects/MARVIN/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

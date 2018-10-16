@@ -208,6 +208,15 @@
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_TrackedCamera.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_TrackedObject.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_Utils.cs" />
+     <Compile Include="Assets\SteamVR_Input\ActionObjects\SteamVR_Input_ActionSet_buggy.cs" />
+     <Compile Include="Assets\SteamVR_Input\ActionObjects\SteamVR_Input_ActionSet_buggy_In.cs" />
+     <Compile Include="Assets\SteamVR_Input\ActionObjects\SteamVR_Input_ActionSet_default.cs" />
+     <Compile Include="Assets\SteamVR_Input\ActionObjects\SteamVR_Input_ActionSet_default_In.cs" />
+     <Compile Include="Assets\SteamVR_Input\ActionObjects\SteamVR_Input_ActionSet_default_Out.cs" />
+     <Compile Include="Assets\SteamVR_Input\ActionObjects\SteamVR_Input_ActionSet_platformer.cs" />
+     <Compile Include="Assets\SteamVR_Input\ActionObjects\SteamVR_Input_ActionSet_platformer_In.cs" />
+     <Compile Include="Assets\SteamVR_Input\SteamVR_Input_Actions.cs" />
+     <Compile Include="Assets\SteamVR_Input\SteamVR_Input_ActionSets.cs" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_ClearAll.shader" />
      <None Include="Assets\SteamVR\InteractionSystem\Hints\Shaders\ControllerButtonHints.shader" />
@@ -248,6 +257,9 @@
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
  </Reference>
+ <Reference Include="Valve.Newtonsoft.Json">
+ <HintPath>C:/Users/Julia/OneDrive/Projects/MARVIN/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
@@ -259,9 +271,6 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
- </Reference>
- <Reference Include="Valve.Newtonsoft.Json">
- <HintPath>C:/Users/Julia/OneDrive/Projects/MARVIN/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
