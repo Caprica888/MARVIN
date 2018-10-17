@@ -8,14 +8,24 @@ public class source_visual : MonoBehaviour {
     private double range;
     private double particleVelocity;
 
+    //0 is alpha
+    //1 is beta
+    //2 is gamma
+    private int particleType = 0;
+
 	// Use this for initialization
 	void Start () {
 
         particleSystem = GetComponent<ParticleSystem>();
-        range = calcRange(3);
 
-        particleVelocity = particleSystem.startSpeed; //m/s
-        particleSystem.startLifetime = ( float )( range / (particleVelocity / 100) );
+        if ( particleType == 0 ) {
+
+            particleSystem.startSpeed = 1;
+            particleSystem.startLifetime = 2;
+            particleSystem.emissionRate = 20;
+
+        }
+
 
     }
 
@@ -28,20 +38,26 @@ public class source_visual : MonoBehaviour {
 	}
 
     //Energy is in MeV
-    //Return is in cm
+    //Return is in m
     //Only for alpha particle
     private double calcRange( double energy ){
 
-        if ( energy < 4 ){
+        if ( particleType == 0 ) {
 
-            return energy * 0.56;
+            if ( energy < 4 ) {
+
+                return ( energy * 0.56 ) / 100;
+
+            }
+            else {
+
+                return ( ( energy * 1.42 ) - 2.62 );
+
+            }
 
         }
-        else {
 
-            return (energy * 1.42) - 2.62;
-
-        }
+        return 0;
         
     }
 
