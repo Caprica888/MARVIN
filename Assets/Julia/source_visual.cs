@@ -23,6 +23,7 @@ public class source_visual : MonoBehaviour {
             particleSystem.startSpeed = 1;
             particleSystem.startLifetime = 2;
             particleSystem.emissionRate = 20;
+            particleSystem.startColor = new Color(0 , 0 , 255);
 
         }
 

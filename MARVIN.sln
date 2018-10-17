@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MARVIN", "Assembly-CSharp-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MARVIN", "Assembly-CSharp-Editor-firstpass.csproj", "{D10CBF03-EF98-8A4D-C9AA-89F9B0270E7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MARVIN", "Assembly-CSharp-firstpass.csproj", "{9AAC826C-FC8B-4F7F-3CB2-45115F2C2552}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{D10CBF03-EF98-8A4D-C9AA-89F9B0270E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D10CBF03-EF98-8A4D-C9AA-89F9B0270E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D10CBF03-EF98-8A4D-C9AA-89F9B0270E7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AAC826C-FC8B-4F7F-3CB2-45115F2C2552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AAC826C-FC8B-4F7F-3CB2-45115F2C2552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AAC826C-FC8B-4F7F-3CB2-45115F2C2552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AAC826C-FC8B-4F7F-3CB2-45115F2C2552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

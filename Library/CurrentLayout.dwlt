@@ -41,10 +41,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 987
-  m_MinSize: {x: 683, y: 492}
+  m_MinSize: {x: 681, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 1
-  controlID: 138
+  controlID: 52
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -65,10 +65,10 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 987
-  m_MinSize: {x: 683, y: 492}
+  m_MinSize: {x: 681, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 139
+  controlID: 53
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -113,8 +113,8 @@ MonoBehaviour:
     y: 0
     width: 353
     height: 597
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -230,10 +230,10 @@ MonoBehaviour:
     y: 0
     width: 1430
     height: 987
-  m_MinSize: {x: 406, y: 492}
+  m_MinSize: {x: 404, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 114
+  controlID: 11
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -254,10 +254,10 @@ MonoBehaviour:
     y: 0
     width: 1430
     height: 597
-  m_MinSize: {x: 406, y: 221}
-  m_MaxSize: {x: 8006, y: 4021}
+  m_MinSize: {x: 404, y: 221}
+  m_MaxSize: {x: 8004, y: 4021}
   vertical: 0
-  controlID: 115
+  controlID: 12
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -373,8 +373,7 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_SearchFilter:
     m_NameFilter: 
-    m_ClassNames:
-    - Material
+    m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
     m_VersionControlStates: []
@@ -383,19 +382,20 @@ MonoBehaviour:
     m_ScenePaths: []
     m_ShowAllHits: 0
     m_SearchArea: 0
-    m_Folders: []
+    m_Folders:
+    - Assets/Julia
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/MS/Pipes-kit/Pipes/Materials
+  - Assets/Julia
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Julia\OneDrive\Projects\MARVIN
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 01ca9a3b
-    m_LastClickedID: 1000000001
-    m_ExpandedIDs: 00000000d4290000262b00003e2c0000c42d0000c2330000e83300002a340000c0380000ac3e00001a3f00007e4100008041000082410000cc6b0000e46b0000f06b000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 180}
+    m_SelectedIDs: 822b0000
+    m_LastClickedID: 11138
+    m_ExpandedIDs: 00000000d4290000ae2b00003a2d0000682d0000962f000020380000463800009e380000e43c0000443f00000c41000056480000fa480000c24c0000c44c0000c64c000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -423,7 +423,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000d42900003e2c0000c42d0000c2330000e83300002a340000c038000086390000ac3e00001a3f00007e4100008041000082410000
+    m_ExpandedIDs: 00000000d4290000ae2b00003a2d0000682d0000962f000020380000463800009e380000e43c0000443f00000c41000056480000fa480000c24c0000c44c0000c64c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -475,7 +475,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 420}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 64
   m_DirectoriesAreaWidth: 278
 --- !u!114 &16
@@ -541,9 +541,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 5684f4ff
-    m_LastClickedID: -752554
-    m_ExpandedIDs: 7eb3f4ff58c5f4fff0cdf4ffa2cff4ff7281f6ff4c93f6ffe49bf6ff969df6ff9efbffff000000001c40000030400000
+    m_SelectedIDs: dc810000
+    m_LastClickedID: 33244
+    m_ExpandedIDs: d4fcfefffa01ffff9efbffff000000007c820000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -599,9 +599,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.48043233, y: 0.3425484, z: -12.143975}
+    m_Target: {x: -10.940321, y: -4.062501, z: 4.859893}
     speed: 2
-    m_Value: {x: -0.48043233, y: 0.3425484, z: -12.143975}
+    m_Value: {x: -10.940321, y: -4.062501, z: 4.859893}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -625,13 +625,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.0026009285, y: -0.9970337, z: 0.06621212, w: 0.03915235}
+    m_Target: {x: 0.17486747, y: -0.5066021, z: 0.10576214, w: 0.8376097}
     speed: 2
-    m_Value: {x: 0.0026009288, y: -0.9970338, z: 0.066212125, w: 0.039152354}
+    m_Value: {x: 0.17486747, y: -0.5066021, z: 0.10576214, w: 0.8376097}
   m_Size:
-    m_Target: 14.108575
+    m_Target: 14.68381
     speed: 2
-    m_Value: 14.108575
+    m_Value: 14.68381
   m_Ortho:
     m_Target: 0
     speed: 2
