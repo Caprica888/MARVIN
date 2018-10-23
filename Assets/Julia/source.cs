@@ -84,4 +84,42 @@ public class source : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    //Will return the point where a line passes through a plane, if there is no intersection then return null
+    private Vector3 linePlaneIntersection(Vector3 origin , Vector3 destination , Vector3 planePosistion , Vector2 planeSize , Vector3 rotation) {
+
+        Vector3 intersectionPoint = null;
+
+        return intersectionPoint;
+
+    }
+
+    private double getAttenuatedDose( double initialIntensity , Vector3 origin , Vector3 destination ) {
+
+        double attenuatedIntensity = 0;
+
+        
+
+        return attenuatedIntensity;
+
+    }
+
+    //Get's posistion of game objects tagged with 'DoseReceptor'
+    private Vector3[] findReceptorLocations() {
+
+        GameObject[] doseReceptors = GameObject.FindGameObjectsWithTag("DoseReceptor");
+
+        Vector3[] points = new Vector3[doseReceptors.Length];
+
+        for ( int i = 0 ; i < points.Length ; i++ ) {
+
+            points[i] = doseReceptors[i].transform.position;
+
+        }
+
+        return points;
+
+    }
+
+
 }
