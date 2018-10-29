@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class source : MonoBehaviour {
 
-    private double airAttenuation = 1; //In inverse meters, 1 is made up someone change it
+    private double airAttenuation = 0.001; //In inverse meters, 1 is made up someone change it
 
     private ParticleSystem sourceParticles;
     private Light sourceLight;
@@ -16,9 +17,31 @@ public class source : MonoBehaviour {
     public Color gammaColour;
     public Color betaColour;
 
+    public double sourceActivity; //in mCi
+
+    private Dictionary<string , double> gammaConstants;
 
     // Use this for initialization
     void Start () {
+
+        //Gamma constant units- Rm^2/hr*Ci
+        gammaConstants = new Dictionary<string , double>();
+        gammaConstants.Add("Pd-109" , 0.003 );
+        gammaConstants.Add("Xe-133" , 0.01);
+        gammaConstants.Add("I-125" , 0.07);
+        gammaConstants.Add("Mo-99" , 0.18);
+        gammaConstants.Add("I-131" , 0.22);
+        gammaConstants.Add("Zn-65" , 0.27);
+        gammaConstants.Add("Ni-63" , 0.31);
+        gammaConstants.Add("Cs-137" , 0.33);
+        gammaConstants.Add("Zr-95" , 0.41);
+        gammaConstants.Add("Mn-54" , 0.47);
+        gammaConstants.Add("Ir-192" , 0.48);
+        gammaConstants.Add("Fe-59" , 0.64);
+        gammaConstants.Add("Ra-226" , 0.83);
+        gammaConstants.Add("Co-60" , 1.32);
+        gammaConstants.Add("Na-24" , 1.84);
+
 
         sourceParticles = GetComponentInChildren<ParticleSystem>();
         sourceLight = GetComponentInChildren<Light>();
@@ -30,8 +53,6 @@ public class source : MonoBehaviour {
             particleEnergies[i] = 0;
 
         }
-
-        doseLines();
 
         switch( radioNuke ) {
 
@@ -50,14 +71,10 @@ public class source : MonoBehaviour {
         if ( particleTypes[ 0 ] ) {
 
             sourceLight.enabled = true;
-
+        
         }
 
-        if ( particleTypes[ 1 ] || particleTypes[ 2 ] ) {
 
-            sourceParticles.enableEmission = true;
-
-        }
 
         //Currently there's only one particle system so it can only display gamma or beta, rn gamma takes president
         if ( particleTypes[ 2 ] ) { 
@@ -80,14 +97,60 @@ public class source : MonoBehaviour {
             sourceParticles.startColor = betaColour;
 
         }
- 
+
+        if ( particleTypes[1] || particleTypes[2] ) {
+
+            sourceParticles.enableEmission = true;
+            sourceParticles.Play();
+
+        }
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+        Vector3[] doseReceptors = findReceptorLocations();
+
+        double activity = 0;
+
+        for ( int i = 0 ; i < doseReceptors.Length ; i++ ) {
+
+            activity += getAttenuatedActivity(37000000000 , transform.position , doseReceptors[i]);
+
+
+        }
+
+        //Check to see if array length is 0, we dont want to divide by 0 later on
+        if ( doseReceptors.Length != 0 ) {
+
+
+            double averageActivity = activity / doseReceptors.Length; //in units s^-1
+            double doseRate = 0;
+
+            for ( int i = 0 ; i < particleTypes.Length ; i++ ) {
+
+                if ( particleTypes[ i ] ) {
+
+                    //averageActivity * particleEnergies[ i ] yields keV/s
+                    //keV/s / 6241506479963235 yields j/s, conversion factor
+                    //Dividing that by weight yields j/kg*s, and a Sv=j/kg
+                    doseRate += ( averageActivity * particleEnergies[ i ] * 1000 ) / ( 6241506479963235 * weight * 3600 ); //Yields mSv/hr
+
+
+                    Debug.Log(averageActivity * particleEnergies[i]);
+
+                }
+
+            }
+
+            Debug.Log(":"+doseRate);
+
+            updateControllerDoseRate(doseRate);
+
+        }
+
+    }
 
     //Trig functions here incase I need to replace them with approximations for speed
     private float cos( float angle ) {
@@ -212,21 +275,6 @@ public class source : MonoBehaviour {
 
     }
 
-    private void doseLines() {
-
-        Vector3[] doseReceptors = findReceptorLocations();
-
-        for ( int i = 0 ; i < doseReceptors.Length ; i++ ) {
-
-            double activity = getAttenuatedActivity(100000000 , transform.position , doseReceptors[i]);
-
-
-        }
-
-        
-
-    }
-
     private double attenuate( double initialAcitvity , double attenuationConstant , double distance) {
         
         return initialAcitvity * Mathf.Exp( ( float )( -attenuationConstant * distance ) );
@@ -300,5 +348,32 @@ public class source : MonoBehaviour {
 
     }
 
+    private TextMesh textMesh = null;
+    private double lastDoseRate = 0;
+
+    private void updateControllerDoseRate( double doseRate ) {
+
+
+        //Only update if dose has changed
+        if ( doseRate != lastDoseRate ) {
+
+            //If its null find the text mesh in the game
+            if ( textMesh == null ) {
+
+                textMesh = GameObject.Find("Controller text").GetComponent<TextMesh>(); //Name of plane on controller
+
+            }
+
+            if ( textMesh != null ) {
+
+                textMesh.text = Math.Round(doseRate , 2) + "\n" + "mSv/h"; //Rounds to two decimals and updates text
+
+            }
+
+            doseRate = lastDoseRate;
+
+        }
+
+    }
 
 }
