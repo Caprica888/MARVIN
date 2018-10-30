@@ -18,31 +18,14 @@ public class source : MonoBehaviour {
     public Color betaColour;
 
     public double sourceActivity; //in mCi
+    private double weight = 50; //Kg and it's a place holder
 
-    private Dictionary<string , double> gammaConstants;
+    private Boolean debug = true;
 
     // Use this for initialization
     void Start () {
 
-        //Gamma constant units- Rm^2/hr*Ci
-        gammaConstants = new Dictionary<string , double>();
-        gammaConstants.Add("Pd-109" , 0.003 );
-        gammaConstants.Add("Xe-133" , 0.01);
-        gammaConstants.Add("I-125" , 0.07);
-        gammaConstants.Add("Mo-99" , 0.18);
-        gammaConstants.Add("I-131" , 0.22);
-        gammaConstants.Add("Zn-65" , 0.27);
-        gammaConstants.Add("Ni-63" , 0.31);
-        gammaConstants.Add("Cs-137" , 0.33);
-        gammaConstants.Add("Zr-95" , 0.41);
-        gammaConstants.Add("Mn-54" , 0.47);
-        gammaConstants.Add("Ir-192" , 0.48);
-        gammaConstants.Add("Fe-59" , 0.64);
-        gammaConstants.Add("Ra-226" , 0.83);
-        gammaConstants.Add("Co-60" , 1.32);
-        gammaConstants.Add("Na-24" , 1.84);
-
-
+       
         sourceParticles = GetComponentInChildren<ParticleSystem>();
         sourceLight = GetComponentInChildren<Light>();
 
@@ -116,7 +99,7 @@ public class source : MonoBehaviour {
 
         for ( int i = 0 ; i < doseReceptors.Length ; i++ ) {
 
-            activity += getAttenuatedActivity(37000000000 , transform.position , doseReceptors[i]);
+            activity += getAttenuatedActivity( sourceActivity * 37000000 , transform.position , doseReceptors[i]); //37000000 is mCi to Bq
 
 
         }
@@ -135,17 +118,12 @@ public class source : MonoBehaviour {
                     //averageActivity * particleEnergies[ i ] yields keV/s
                     //keV/s / 6241506479963235 yields j/s, conversion factor
                     //Dividing that by weight yields j/kg*s, and a Sv=j/kg
-                    doseRate += ( averageActivity * particleEnergies[ i ] * 1000 ) / ( 6241506479963235 * weight * 3600 ); //Yields mSv/hr
-
-
-                    Debug.Log(averageActivity * particleEnergies[i]);
-
+                    doseRate += ( averageActivity * particleEnergies[ i ] * 1000 * 3600 ) / ( 6241506479963235 * weight ); //Yields mSv/hr
+                    
                 }
 
             }
-
-            Debug.Log(":"+doseRate);
-
+            
             updateControllerDoseRate(doseRate);
 
         }
@@ -289,13 +267,14 @@ public class source : MonoBehaviour {
 
         GameObject[] shields = GameObject.FindGameObjectsWithTag( "Shielding" );
         GameObject shield;
-        
+
+
         for ( int i = 0 ; i < shields.Length ; i++ ) {
 
             shield = shields[i];
 
             //Someone help me find the size of a box ):
-            Vector3[] points = lineBoxIntersection(origin , destination , shield.transform.position , new Vector3( 1 , 1 , 1 ) , shield.transform.rotation.eulerAngles );
+            Vector3[] points = lineBoxIntersection(origin , destination , shield.transform.position , shield.transform.localScale , shield.transform.rotation.eulerAngles );
 
             if ( points[0] != Vector3.zero && points[1] != Vector3.zero ) {
                 
@@ -351,11 +330,14 @@ public class source : MonoBehaviour {
     private TextMesh textMesh = null;
     private double lastDoseRate = 0;
 
+    int updateClicks = 40;
+    int updateClick = 0;
+
     private void updateControllerDoseRate( double doseRate ) {
 
 
         //Only update if dose has changed
-        if ( doseRate != lastDoseRate ) {
+        if ( doseRate != lastDoseRate && updateClick > updateClicks ) {
 
             //If its null find the text mesh in the game
             if ( textMesh == null ) {
@@ -371,8 +353,11 @@ public class source : MonoBehaviour {
             }
 
             doseRate = lastDoseRate;
+            updateClick = 0;
 
         }
+
+        updateClick++;
 
     }
 
