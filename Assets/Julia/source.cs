@@ -176,13 +176,79 @@ public class source : MonoBehaviour {
         Vector3[] points = new Vector3[ 2 ];
         Vector3[] planes = new Vector3[ 6 ];
 
+        Vector3[] newOrigins = new Vector3[6];
+        Vector3[] newAngles = new Vector3[6];
+        Vector2[] newSizes = new Vector2[6];
+
+        newOrigins[0] = boxPosistion + new Vector3(0, ( size.y / 2 ) , 0);
+        newAngles[0] = angles + new Vector3(90 , 0 , 0);
+        newSizes[0] = new Vector2(size.x , size.z);
+
+        newOrigins[1] = boxPosistion + new Vector3(0 , -( size.y / 2 ) , 0);
+        newAngles[1] = angles + new Vector3(90 , 0 , 0);
+        newSizes[1] = new Vector2(size.x , size.z);
+
+        newOrigins[2] = boxPosistion + new Vector3(0 , 0 , ( size.z / 2 ));
+        newAngles[2] = angles + new Vector3(0 , 0 , 0);
+        newSizes[2] = new Vector2(size.x , size.y);
+
+        newOrigins[3] = boxPosistion + new Vector3(0 , 0 , -( size.z / 2 ));
+        newAngles[3] = angles + new Vector3(0 , 0 , 0);
+        newSizes[3] = new Vector2(size.x , size.y);
+
+        newOrigins[4] = boxPosistion + new Vector3(( size.x / 2 ) , 0 , 0);
+        newAngles[4] = angles + new Vector3(0 , 90 , 0);
+        newSizes[4] = new Vector2(size.z , size.y);
+
+        newOrigins[5] = boxPosistion + new Vector3(( size.x / 2 ) , 0 , 0);
+        newAngles[5] = angles + new Vector3(0 , 90 , 0);
+        newSizes[5] = new Vector2(size.z , size.y);
+
+
+
+
         //Seperate box into 6 planes
-        planes[0] = linePlaneIntersection(origin , destination , boxPosistion + new Vector3(0 , ( size.y / 2 ) , 0) , new Vector2(size.x , size.z) , angles + new Vector3( 90 , 0 , 0 ) ); //Top
-        planes[1] = linePlaneIntersection(origin , destination , boxPosistion + new Vector3(0 , -( size.y / 2 ) , 0) , new Vector2(size.x , size.z) , angles + new Vector3(90 , 0 , 0)); //Bottom
-        planes[2] = linePlaneIntersection(origin , destination , boxPosistion + new Vector3(0 , 0 , ( size.z / 2 ) ) , new Vector2(size.x , size.y) , angles + new Vector3(0 , 0 , 0)); //Front
-        planes[3] = linePlaneIntersection(origin , destination , boxPosistion + new Vector3(0 , 0 , -( size.z / 2 ) ) , new Vector2(size.x , size.y) , angles + new Vector3(0 , 0 , 0)); //Back
-        planes[4] = linePlaneIntersection(origin , destination , boxPosistion + new Vector3( ( size.x / 2 ) , 0 , 0) , new Vector2(size.z , size.y) , angles + new Vector3(0 , 90 , 0)); //Left side
-        planes[5] = linePlaneIntersection(origin , destination , boxPosistion + new Vector3( ( size.x / 2 ) , 0 , 0) , new Vector2(size.z , size.y) , angles + new Vector3(0 , 90 , 0)); //Right side
+        for ( int i = 0 ; i < 6 ; i++ ) {
+            
+            planes[i] = linePlaneIntersection(origin , destination , newOrigins[i] , newSizes[i] , newAngles[i] ,boxPosistion); //Top
+
+        }
+
+        if ( debug ) {
+
+            //8 points in a cube
+            Vector3[] corners = new Vector3[8];
+            corners[0] = boxPosistion + new Vector3( -( size.x / 2 ) , ( size.y / 2 ) , ( size.z / 2 ) );
+            corners[1] = boxPosistion + new Vector3( ( size.x / 2 ) , ( size.y / 2 ) , ( size.z / 2 ) );
+            corners[2] = boxPosistion + new Vector3( ( size.x / 2 ) , -( size.y / 2 ) , ( size.z / 2 ) );
+            corners[3] = boxPosistion + new Vector3( -( size.x / 2 ) , -( size.y / 2 ) , ( size.z / 2 ));
+            corners[4] = boxPosistion + new Vector3(-( size.x / 2 ) , ( size.y / 2 ) , -( size.z / 2 ));
+            corners[5] = boxPosistion + new Vector3( ( size.x / 2 ) , ( size.y / 2 ) , -( size.z / 2 ));
+            corners[6] = boxPosistion + new Vector3( ( size.x / 2 ) , -( size.y / 2 ) , -( size.z / 2 ));
+            corners[7] = boxPosistion + new Vector3(-( size.x / 2 ) , -( size.y / 2 ) , -( size.z / 2 ));
+
+            for ( int i = 0 ; i < 8 ; i++ ) {
+
+                corners[i] = rotateAbout(boxPosistion , corners[i] , angles);
+
+            }
+
+            DrawLine(corners[0] , corners[1] , Color.blue);
+            DrawLine(corners[1] , corners[2] , Color.blue);
+            DrawLine(corners[2] , corners[3] , Color.blue);
+            DrawLine(corners[3] , corners[0] , Color.blue);
+
+            DrawLine(corners[4] , corners[5] , Color.blue);
+            DrawLine(corners[5] , corners[6] , Color.blue);
+            DrawLine(corners[6] , corners[7] , Color.blue);
+            DrawLine(corners[7] , corners[4] , Color.blue);
+
+            DrawLine(corners[0] , corners[4] , Color.blue);
+            DrawLine(corners[1] , corners[5] , Color.blue);
+            DrawLine(corners[2] , corners[6] , Color.blue);
+            DrawLine(corners[3] , corners[7] , Color.blue);
+
+        }
 
         points[0] = Vector3.zero;
         points[1] = Vector3.zero;
@@ -212,7 +278,7 @@ public class source : MonoBehaviour {
     }
 
     //Will return the point where a line passes through a plane, if there is no intersection then return zero vector3
-    private Vector3 linePlaneIntersection(Vector3 origin , Vector3 destination , Vector3 planePosistion , Vector2 planeSize , Vector3 rotation) {
+    private Vector3 linePlaneIntersection(Vector3 origin , Vector3 destination , Vector3 planePosistion , Vector2 planeSize , Vector3 rotation , Vector3 center ) {
 
         Vector3 intersectionPoint = Vector3.zero;
 
@@ -242,8 +308,8 @@ public class source : MonoBehaviour {
                 //If these conditions are met then the line passes through the plane
                 intersectionPoint = planePosistion + new Vector3(deltaX , deltaY , 0);
 
-                //Rotates point about plane posistion
-                intersectionPoint =rotateAbout( planePosistion , intersectionPoint , rotation );
+                intersectionPoint = rotateAbout(center , intersectionPoint , rotation);
+
 
             }
 
@@ -268,6 +334,11 @@ public class source : MonoBehaviour {
         GameObject[] shields = GameObject.FindGameObjectsWithTag( "Shielding" );
         GameObject shield;
 
+        if ( debug ) {
+
+            //DrawLine(origin , destination , Color.red );
+
+        }
 
         for ( int i = 0 ; i < shields.Length ; i++ ) {
 
@@ -275,9 +346,15 @@ public class source : MonoBehaviour {
 
             //Someone help me find the size of a box ):
             Vector3[] points = lineBoxIntersection(origin , destination , shield.transform.position , shield.transform.localScale , shield.transform.rotation.eulerAngles );
-
+            
             if ( points[0] != Vector3.zero && points[1] != Vector3.zero ) {
                 
+                if ( debug ) {
+
+                    DrawLine(points[0] , points[1],Color.green);
+
+                }
+
                 //This is our thickness
                 float thickness = Vector3.Distance(points[0] , points[1]);
 
@@ -359,6 +436,19 @@ public class source : MonoBehaviour {
 
         updateClick++;
 
+    }
+
+    void DrawLine(Vector3 start , Vector3 end , Color color , float duration = 0.052f) {
+        GameObject myLine = new GameObject();
+        myLine.transform.position = start;
+        myLine.AddComponent<LineRenderer>();
+        LineRenderer lr = myLine.GetComponent<LineRenderer>();
+        lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
+        lr.SetColors(color , color);
+        lr.SetWidth(0.01f , 0.01f);
+        lr.SetPosition(0 , start);
+        lr.SetPosition(1 , end);
+        GameObject.Destroy(myLine , duration);
     }
 
 }
