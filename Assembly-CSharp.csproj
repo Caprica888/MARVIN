@@ -71,8 +71,9 @@
      <Compile Include="Assets\RockVR\Video\Scripts\VideoCapture.cs" />
      <Compile Include="Assets\RockVR\Video\Scripts\VideoCaptureCtrl.cs" />
      <Compile Include="Assets\RockVR\Video\Scripts\VideoPlayer.cs" />
-     <Compile Include="Assets\Scripts\UIHologram.cs" />
-     <Compile Include="Assets\Scripts\UIHologram_ObjectScript.cs" />
+     <Compile Include="Assets\Scripts\UI\UIHologram.cs" />
+     <Compile Include="Assets\Scripts\UI\UIHologram_ObjectScript.cs" />
+     <Compile Include="Assets\Scripts\UI\UIHologram_Scroll_Buttons.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_TestThrow.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_TestTrackedCamera.cs" />
@@ -260,6 +261,7 @@
      <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\Silhouette.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_ColorOut.shader" />
      <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\SeeThru.shader" />
+     <None Include="Assets\SkySerie Freebie\Hdri setup.txt" />
      <None Include="Assets\SteamVR\InteractionSystem\Readme_InteractionSystem.txt" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/Julia/OneDrive/Projects/MARVIN/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
