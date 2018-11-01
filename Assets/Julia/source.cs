@@ -200,11 +200,7 @@ public class source : MonoBehaviour {
             
             if ( points[0] != Vector3.zero && points[1] != Vector3.zero ) {
                 
-                if ( debug ) {
-
-                    DrawLine(points[0] , points[1],Color.green);
-
-                }
+                
 
                 //This is our thickness
                 float thickness = Vector3.Distance(points[0] , points[1]);
@@ -223,6 +219,13 @@ public class source : MonoBehaviour {
 
                 attenuatedActivity = attenuate(attenuatedActivity , airAttenuation , airAttenuationDistance);
 
+                if ( debug ) {
+
+                    DrawLine(origin , closestPoint , Color.red);
+                    DrawLine(closestPoint , furthestPoint , Color.green);
+
+                }
+
                 float materialAttenuationConstant = 10;//Please change later to match material
 
                 attenuatedActivity = attenuate(attenuatedActivity, materialAttenuationConstant , thickness);
@@ -233,6 +236,8 @@ public class source : MonoBehaviour {
         }
 
         attenuatedActivity = attenuate(attenuatedActivity , airAttenuation , Vector3.Distance(origin , destination));
+
+        DrawLine(origin , destination , Color.blue);
 
         return attenuatedActivity;
 
