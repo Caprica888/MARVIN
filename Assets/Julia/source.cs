@@ -130,142 +130,33 @@ public class source : MonoBehaviour {
 
     }
 
-    //Trig functions here incase I need to replace them with approximations for speed
-    private float cos( float angle ) {
-
-        return Mathf.Cos(angle);
-
-    }
-
-
-    private float sin(float angle) {
-
-        return Mathf.Sin(angle);
-
-    }
-
-    private float asin(float angle) {
-
-        return Mathf.Asin(angle);
-
-    }
-
-    private float acos(float angle) {
-
-        return Mathf.Acos(angle);
-
-    }
-
-    private float sqrt( float number) {
-
-        return Mathf.Sqrt(number);
-
-    }
-    
-    //Rotates the point around center
-    private Vector3 rotateAbout( Vector3 center , Vector3 point , Vector3 angles) {
-
-        return Quaternion.Euler( angles ) * ( point - center ) + center;
-
-    }
+ 
     
 
     //Will return 2 points if line intersects box, will return 1 point if it 'knicks' the box, or return 0 points. Well the array length will always be 2 but they're just filled with zero vectors
-    private Vector3[] lineBoxIntersection(Vector3 origin , Vector3 destination ,Vector3 boxPosistion , Vector3 size , Vector3 angles ) {
-
-        Vector3[] points = new Vector3[ 2 ];
-        Vector3[] planes = new Vector3[ 6 ];
-
-        Vector3[] newOrigins = new Vector3[6];
-        Vector3[] newAngles = new Vector3[6];
-        Vector2[] newSizes = new Vector2[6];
-
-        newOrigins[0] = boxPosistion + new Vector3(0, ( size.y / 2 ) , 0);
-        newAngles[0] = angles + new Vector3(90 , 0 , 0);
-        newSizes[0] = new Vector2(size.x , size.z);
-
-        newOrigins[1] = boxPosistion + new Vector3(0 , -( size.y / 2 ) , 0);
-        newAngles[1] = angles + new Vector3(90 , 0 , 0);
-        newSizes[1] = new Vector2(size.x , size.z);
-
-        newOrigins[2] = boxPosistion + new Vector3(0 , 0 , ( size.z / 2 ));
-        newAngles[2] = angles + new Vector3(0 , 0 , 0);
-        newSizes[2] = new Vector2(size.x , size.y);
-
-        newOrigins[3] = boxPosistion + new Vector3(0 , 0 , -( size.z / 2 ));
-        newAngles[3] = angles + new Vector3(0 , 0 , 0);
-        newSizes[3] = new Vector2(size.x , size.y);
-
-        newOrigins[4] = boxPosistion + new Vector3(( size.x / 2 ) , 0 , 0);
-        newAngles[4] = angles + new Vector3(0 , 90 , 0);
-        newSizes[4] = new Vector2(size.z , size.y);
-
-        newOrigins[5] = boxPosistion + new Vector3(( size.x / 2 ) , 0 , 0);
-        newAngles[5] = angles + new Vector3(0 , 90 , 0);
-        newSizes[5] = new Vector2(size.z , size.y);
+    private Vector3[] lineBoxIntersection(Vector3 origin , Vector3 destination , GameObject gameObject ) {
+       
+        RaycastHit hitA;
+        RaycastHit hitB;
+        Vector3 startA = Vector3.zero;
+        Vector3 startB = Vector3.zero;
 
 
+        //Checks to see if the source hit one face
+        if ( Physics.Raycast(origin , ( ( origin - destination ) * -1f ).normalized , out hitA ) ) {
 
+            if ( hitA.transform.name == gameObject.name ) {
 
-        //Seperate box into 6 planes
-        for ( int i = 0 ; i < 6 ; i++ ) {
-            
-            planes[i] = linePlaneIntersection(origin , destination , newOrigins[i] , newSizes[i] , newAngles[i] ,boxPosistion); //Top
+                startA = hitA.point;
 
-        }
+                //Now that we get a hit, we work backwards to get another ray cast, from the target to the source
+                if ( Physics.Raycast( destination , ( ( destination - origin ) * -1f ).normalized , out hitB) ) {
 
-        if ( debug ) {
+                    if ( hitB.transform.name == gameObject.name ) {
 
-            //8 points in a cube
-            Vector3[] corners = new Vector3[8];
-            corners[0] = boxPosistion + new Vector3( -( size.x / 2 ) , ( size.y / 2 ) , ( size.z / 2 ) );
-            corners[1] = boxPosistion + new Vector3( ( size.x / 2 ) , ( size.y / 2 ) , ( size.z / 2 ) );
-            corners[2] = boxPosistion + new Vector3( ( size.x / 2 ) , -( size.y / 2 ) , ( size.z / 2 ) );
-            corners[3] = boxPosistion + new Vector3( -( size.x / 2 ) , -( size.y / 2 ) , ( size.z / 2 ));
-            corners[4] = boxPosistion + new Vector3(-( size.x / 2 ) , ( size.y / 2 ) , -( size.z / 2 ));
-            corners[5] = boxPosistion + new Vector3( ( size.x / 2 ) , ( size.y / 2 ) , -( size.z / 2 ));
-            corners[6] = boxPosistion + new Vector3( ( size.x / 2 ) , -( size.y / 2 ) , -( size.z / 2 ));
-            corners[7] = boxPosistion + new Vector3(-( size.x / 2 ) , -( size.y / 2 ) , -( size.z / 2 ));
+                        startB = hitB.point;
 
-            for ( int i = 0 ; i < 8 ; i++ ) {
-
-                corners[i] = rotateAbout(boxPosistion , corners[i] , angles);
-
-            }
-
-            DrawLine(corners[0] , corners[1] , Color.blue);
-            DrawLine(corners[1] , corners[2] , Color.blue);
-            DrawLine(corners[2] , corners[3] , Color.blue);
-            DrawLine(corners[3] , corners[0] , Color.blue);
-
-            DrawLine(corners[4] , corners[5] , Color.blue);
-            DrawLine(corners[5] , corners[6] , Color.blue);
-            DrawLine(corners[6] , corners[7] , Color.blue);
-            DrawLine(corners[7] , corners[4] , Color.blue);
-
-            DrawLine(corners[0] , corners[4] , Color.blue);
-            DrawLine(corners[1] , corners[5] , Color.blue);
-            DrawLine(corners[2] , corners[6] , Color.blue);
-            DrawLine(corners[3] , corners[7] , Color.blue);
-
-        }
-
-        points[0] = Vector3.zero;
-        points[1] = Vector3.zero;
-
-        int k = 0;
-
-        for ( int i = 0 ; i < planes.Length ; i++ ) {
-
-            if ( planes[ i ] != Vector3.zero ) {
-
-                points[k] = planes[i];
-
-                k++;
-
-                if ( k == 2 ) {
-
-                    return points;
+                    }
 
                 }
 
@@ -273,49 +164,15 @@ public class source : MonoBehaviour {
 
         }
 
-        return points;
 
-    }
-
-    //Will return the point where a line passes through a plane, if there is no intersection then return zero vector3
-    private Vector3 linePlaneIntersection(Vector3 origin , Vector3 destination , Vector3 planePosistion , Vector2 planeSize , Vector3 rotation , Vector3 center ) {
-
-        Vector3 intersectionPoint = Vector3.zero;
-
-        //A is origin, B is destination, C is center of plane, I is intersection point
-        float ab = Vector3.Distance(origin , destination);
-        float ac = Vector3.Distance(planePosistion , origin);
-        float bc = Vector3.Distance(planePosistion , destination);
-
-        //AB^2=CB^2+AC^2-2(AC)(BC)cos(omega)
-        float omega = acos( ( ( ab * ab ) - ( bc * bc ) - ( ac * ac ) ) / ( -2 * ac * bc ) );
-
-        //Sine rule
-        float ci = ( sin(omega) * ac * bc ) / ab;
-        float alpha = asin(ci / ac);
-        float ai = cos(alpha) * ac;
-
-        //Complicated trapazoid diagram, just trust me maths
-        float deltaX = sqrt(((ai*ai)+(ci*ci)-(ac*ac)) / 2);
+        Vector3[] points = new Vector3[ 2 ];
         
-        if ( deltaX < ( planeSize.x / 2 ) ) {
-            
-            //P-thag rule
-            float deltaY = ( ci * ci ) - ( deltaX * deltaX );
-
-            if ( deltaY < ( planeSize.y / 2 ) ) {
-
-                //If these conditions are met then the line passes through the plane
-                intersectionPoint = planePosistion + new Vector3(deltaX , deltaY , 0);
-
-                intersectionPoint = rotateAbout(center , intersectionPoint , rotation);
+        points[0] = startA;
+        points[1] = startB;
+        
 
 
-            }
-
-        }
-
-        return intersectionPoint;
+        return points;
 
     }
 
@@ -334,18 +191,12 @@ public class source : MonoBehaviour {
         GameObject[] shields = GameObject.FindGameObjectsWithTag( "Shielding" );
         GameObject shield;
 
-        if ( debug ) {
-
-            //DrawLine(origin , destination , Color.red );
-
-        }
-
         for ( int i = 0 ; i < shields.Length ; i++ ) {
 
             shield = shields[i];
 
             //Someone help me find the size of a box ):
-            Vector3[] points = lineBoxIntersection(origin , destination , shield.transform.position , shield.transform.localScale , shield.transform.rotation.eulerAngles );
+            Vector3[] points = lineBoxIntersection(origin , destination , shield );
             
             if ( points[0] != Vector3.zero && points[1] != Vector3.zero ) {
                 
