@@ -20,7 +20,7 @@ public class source : MonoBehaviour {
     public double sourceActivity; //in mCi
     private double weight = 50; //Kg and it's a place holder
 
-    private Boolean debug = true;
+    private Boolean debug = false;
 
     // Use this for initialization
     void Start () {
@@ -97,19 +97,28 @@ public class source : MonoBehaviour {
 
         double activity = 0;
 
-        for ( int i = 0 ; i < doseReceptors.Length ; i++ ) {
-
-            activity += getAttenuatedActivity( sourceActivity * 37000000 , transform.position , doseReceptors[i]); //37000000 is mCi to Bq
-
-
-        }
-
         //Check to see if array length is 0, we dont want to divide by 0 later on
         if ( doseReceptors.Length != 0 ) {
 
 
+            float weight = 60f; //Kg
+            float height = 1.6f; //Meters
+
+            float surfaceArea = 0.007184f * Mathf.Pow(weight , 0.425f) * Mathf.Pow(height , 0.725f) / doseReceptors.Length; //In m^2
+
+            for ( int i = 0 ; i < doseReceptors.Length ; i++ ) {
+
+                activity += getAttenuatedActivity( sourceActivity * 37000000 , transform.position , doseReceptors[i]); //37000000 is mCi to Bq
+
+                activity = ( ( activity ) / ( 4 * Math.PI * Math.Pow(( doseReceptors[i] - transform.position ).magnitude , 2) ) ) * surfaceArea;
+                
+            }
+
             double averageActivity = activity / doseReceptors.Length; //in units s^-1
+        
             double doseRate = 0;
+
+
 
             for ( int i = 0 ; i < particleTypes.Length ; i++ ) {
 
@@ -119,8 +128,14 @@ public class source : MonoBehaviour {
                     //keV/s / 6241506479963235 yields j/s, conversion factor
                     //Dividing that by weight yields j/kg*s, and a Sv=j/kg
                     doseRate += ( averageActivity * particleEnergies[ i ] * 1000 * 3600 ) / ( 6241506479963235 * weight ); //Yields mSv/hr
-                    
+            
                 }
+
+            }
+
+            if ( doseRate < 0 ) {
+
+                doseRate = 0;
 
             }
             
@@ -141,16 +156,18 @@ public class source : MonoBehaviour {
         Vector3 startA = Vector3.zero;
         Vector3 startB = Vector3.zero;
 
+  
+        Collider collider = gameObject.GetComponent<Collider>();
 
         //Checks to see if the source hit one face
-        if ( Physics.Raycast(origin , ( ( origin - destination ) * -1f ).normalized , out hitA ) ) {
+        if ( collider.Raycast( new Ray( origin , ( ( origin - destination ) * -1f ).normalized ) , out hitA , 1000f ) ) {
 
             if ( hitA.transform.name == gameObject.name ) {
 
                 startA = hitA.point;
 
                 //Now that we get a hit, we work backwards to get another ray cast, from the target to the source
-                if ( Physics.Raycast( destination , ( ( destination - origin ) * -1f ).normalized , out hitB) ) {
+                if ( collider.Raycast( new Ray( destination , ( ( destination - origin ) * -1f ).normalized ) , out hitB , 1000f ) ) {
 
                     if ( hitB.transform.name == gameObject.name ) {
 
@@ -170,8 +187,7 @@ public class source : MonoBehaviour {
         points[0] = startA;
         points[1] = startB;
         
-
-
+        
         return points;
 
     }
@@ -183,6 +199,45 @@ public class source : MonoBehaviour {
 
     }
 
+    private GameObject[] sortShields( GameObject[] shields , Vector3 origin) {
+
+        float[] distances = new float[shields.Length];
+        for ( int i = 0 ; i < shields.Length ; i++ ) {
+
+            distances[i] = ( shields[i].transform.position - origin ).magnitude;
+            
+        }
+
+        int n = shields.Length;
+
+        for ( int i = 0 ; i < n - 1 ; i++ ) {
+
+            for ( int j = 0 ; j < n - i - 1 ; j++ ) {
+
+                if ( distances[ j ] > distances[ j + 1 ] ) {
+
+                    GameObject tempObject;
+                    float tempDistance;
+
+                    tempDistance = distances[j];
+                    distances[j] = distances[j + 1];
+                    distances[j + 1] = tempDistance;
+
+
+                    tempObject = shields[j];
+                    shields[j] = shields[j + 1];
+                    shields[j + 1] = tempObject;
+
+                }
+
+            }
+
+        }
+
+        return shields;
+
+    }
+
     //Work in progress my dudes
     private double getAttenuatedActivity( double initialActivity , Vector3 origin , Vector3 destination ) {
 
@@ -191,17 +246,17 @@ public class source : MonoBehaviour {
         GameObject[] shields = GameObject.FindGameObjectsWithTag( "Shielding" );
         GameObject shield;
 
+        //Sort shields
+        shields = sortShields(shields , origin);
+
         for ( int i = 0 ; i < shields.Length ; i++ ) {
 
             shield = shields[i];
 
-            //Someone help me find the size of a box ):
             Vector3[] points = lineBoxIntersection(origin , destination , shield );
             
             if ( points[0] != Vector3.zero && points[1] != Vector3.zero ) {
                 
-                
-
                 //This is our thickness
                 float thickness = Vector3.Distance(points[0] , points[1]);
 
@@ -225,7 +280,7 @@ public class source : MonoBehaviour {
                     DrawLine(closestPoint , furthestPoint , Color.green);
 
                 }
-
+                
                 float materialAttenuationConstant = 10;//Please change later to match material
 
                 attenuatedActivity = attenuate(attenuatedActivity, materialAttenuationConstant , thickness);
@@ -235,10 +290,14 @@ public class source : MonoBehaviour {
 
         }
 
+        if ( debug ) {
+
+            DrawLine(origin , destination , Color.blue);
+
+        }
+
         attenuatedActivity = attenuate(attenuatedActivity , airAttenuation , Vector3.Distance(origin , destination));
-
-        DrawLine(origin , destination , Color.blue);
-
+        
         return attenuatedActivity;
 
     }
