@@ -6012,6 +6012,10 @@ Prefab:
       propertyPath: m_TagString
       value: DoseReceptor
       objectReference: {fileID: 0}
+    - target: {fileID: 4629298470856694, guid: dc06161b6d97feb419f45f03b62e14b9, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc06161b6d97feb419f45f03b62e14b9, type: 2}
   m_IsPrefabAsset: 0
@@ -11384,13 +11388,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lines:
-  - herp
-  - a
-  - derp
+  - 
+  - 
+  - 
   UI_HologramElement: {fileID: 1039485037731226, guid: f1d859aafb03b9d4282ad3ed9a2a0b73,
     type: 2}
   spawnPoint: {fileID: 1747869182}
-  planeColor: {r: 0, g: 0.9820709, b: 1, a: 1}
+  planeColor: {r: 0, g: 0.89888954, b: 1, a: 1}
   textColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &1862326826
 Transform:

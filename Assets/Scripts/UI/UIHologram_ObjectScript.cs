@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIHologram_ObjectScript : MonoBehaviour {
     #region variables
@@ -10,14 +11,14 @@ public class UIHologram_ObjectScript : MonoBehaviour {
     public Color planeColor;
     public Color textColor;
 
-    private GameObject UI_Extension;
     private GameObject UIClone;  //  instantiated UI element
-    private GameObject UIExtensionClone;    //  instantiated UI element
+    private Button extend, close;
     #endregion
 
     private void Start()
     {
-        UI_Extension = UI_HologramElement.GetComponent<UIHologram>().UI_HologramExtension;
+        extend = UI_HologramElement.GetComponent<UIHologram>().extendButton;
+        close = UI_HologramElement.GetComponent<UIHologram>().closeButton;
     }
 
     private void OnTriggerEnter(Collider col)

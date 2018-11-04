@@ -13,12 +13,14 @@ public class UIHologram : MonoBehaviour {
     public List<string> text = new List<string>();
     public bool isActive = false;   //  is the UI in the world?
     public float displayHeight; //  how high from the spawn point the plane should be
+    public float extensionDistance = 0.0f; //  how far from the origin of the main Holo UI?
     public float sizeModifier = 1.9f;   //  used to help modify the dynamic size of the holo-plane
     public float sizeModifierReducer = 0.4f;
 
     private Text displayText;
     private Color planeColor;
     private Color textColor;
+    private GameObject extensionClone;
     private float size;
     #endregion
 
@@ -28,21 +30,37 @@ public class UIHologram : MonoBehaviour {
 
     public void setTextColor(Color col) { textColor = col; }
 
-    private void openExtension()
-    {
+    public void openExtension()
+    {       
+        extensionClone = Instantiate(UI_HologramExtension, this.transform);
+        extensionClone.transform.position = new Vector3(this.transform.position.x + extensionDistance, this.transform.position.y, this.transform.position.z);
+        extensionClone.transform.SetParent(this.transform);
+        extensionClone.GetComponent<UIHologram_Scroll>().setColor(planeColor);
+    }
 
+    public void closeExtension()
+    {
+        if(extensionClone != null)
+        {
+            Destroy(extensionClone);
+        }
+    }
+
+    public void closeUI()
+    {
+        Debug.Log("UI Closed!");
+        Destroy(this);
     }
 
     private void Start() {
         size = plane.GetComponent<RectTransform>().localScale.z * sizeModifier;
         displayText = this.GetComponentInChildren<Text>();
-        GetComponentInChildren<Renderer>().material.color = planeColor;
-        GetComponentInChildren<Material>().color = GetComponentInChildren<Renderer>().material.color;
+        GetComponentInChildren<Renderer>().material.color = planeColor; //  set rendering color
+        GetComponentInChildren<Material>().color = GetComponentInChildren<Renderer>().material.color;   //  set this material color to render as the rendering color
     }
 
     // Update is called once per frame
     private void Update () {
-        this.GetComponent<Transform>().LookAt(player.transform.position);  //  billboarding
 
         if (!isActive)  //  if the UI isn't already displayed, display it
         {          
@@ -56,8 +74,13 @@ public class UIHologram : MonoBehaviour {
                 * issue with plane sizes. they physically change but editor says they're the same size? moving extend button for time being
                 *  extendButton.transform.position -= new Vector3(0, (plane.GetComponent<RectTransform>().localScale.y / 2) + (sizeModifier - sizeModifierReducer), 0);
             */
+            //openExtension();           
             isActive = true;
             displayText.color = textColor;
+        }
+        else
+        {
+            this.GetComponent<Transform>().LookAt(player.transform.position);  //  billboarding
         }
     }
 }

@@ -276,6 +276,7 @@ MonoBehaviour:
   text: []
   isActive: 0
   displayHeight: 0
+  extensionDistance: -2.86
   sizeModifier: 0.7
   sizeModifierReducer: 0.4
 --- !u!114 &114256716929971106
@@ -473,7 +474,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114338134816569222}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114116688185084682}
+        m_MethodName: closeUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114862422356521220
@@ -514,7 +526,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114514168876308890}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114116688185084682}
+        m_MethodName: openExtension
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!222 &222074573112829134
