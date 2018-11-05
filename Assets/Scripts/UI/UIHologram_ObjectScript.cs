@@ -8,18 +8,12 @@ public class UIHologram_ObjectScript : MonoBehaviour {
     public List<string> lines = new List<string>();
     public GameObject UI_HologramElement;   //  the UI hologram prefab
     public Transform spawnPoint;   //  where the UI will spawn (choose wisely)
+    public string extensionMeasurementScale;   //  ie. mCi
     public Color planeColor;
     public Color textColor;
 
     private GameObject UIClone;  //  instantiated UI element
-    private Button extend, close;
     #endregion
-
-    private void Start()
-    {
-        extend = UI_HologramElement.GetComponent<UIHologram>().extendButton;
-        close = UI_HologramElement.GetComponent<UIHologram>().closeButton;
-    }
 
     private void OnTriggerEnter(Collider col)
     {
@@ -36,14 +30,15 @@ public class UIHologram_ObjectScript : MonoBehaviour {
 
     private void spawnUI()
     {
-            UIClone = Instantiate(UI_HologramElement, spawnPoint);
-            UIClone.transform.SetParent(this.transform);    //  set this object as parent to the instantiated UI element
-            UIClone.GetComponent<UIHologram>().setPlaneColor(planeColor);
-            UIClone.GetComponent<UIHologram>().setTextColor(textColor);
+        UIClone = Instantiate(UI_HologramElement, spawnPoint);
+        UIClone.transform.SetParent(this.transform);    //  set this object as parent to the instantiated UI element
+        UIClone.GetComponent<UIHologram>().setPlaneColor(planeColor);
+        UIClone.GetComponent<UIHologram>().setTextColor(textColor);
+        UIClone.GetComponent<UIHologram>().setMeasurement(extensionMeasurementScale);
 
-            for (int i = 0; i < lines.Count; i++)
-            {
-                UIClone.GetComponent<UIHologram>().setLines(lines[i], i);
-            }
+        for (int i = 0; i < lines.Count; i++)
+        {
+            UIClone.GetComponent<UIHologram>().setLines(lines[i], i);
+        }
     }
 }
