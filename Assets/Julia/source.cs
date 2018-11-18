@@ -22,10 +22,15 @@ public class source : MonoBehaviour {
 
     private Boolean debug = false;
 
+    private String[][] rawData;
+
     // Use this for initialization
     void Start () {
 
+        readCSV();
        
+  
+
         sourceParticles = GetComponentInChildren<ParticleSystem>();
         sourceLight = GetComponentInChildren<Light>();
 
@@ -364,6 +369,19 @@ public class source : MonoBehaviour {
         lr.SetPosition(0 , start);
         lr.SetPosition(1 , end);
         GameObject.Destroy(myLine , duration);
+    }
+
+    private void readCSV() {
+
+        // String fileData = System.IO.File.ReadAllText("Assets/Julia/Data.csv");
+        // String[] lines = fileData.Split("\n".ToCharArray());
+
+        // if ( lines.Length > 0 ) {
+
+        //rawData = new String[lines[0].Split(",".ToCharArray()).Length ][ lines.Length];
+
+        //}
+
     }
 
 }
