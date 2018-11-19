@@ -37,7 +37,7 @@
     },
     {
       "name": "/actions/default/in/ControllerTrigger",
-      "type": "boolean",
+      "type": "vector1",
       "requirement": "suggested"
     },
     {

@@ -206,6 +206,15 @@
                },
                "mode" : "trigger",
                "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "value" : {
+                     "output" : "/actions/default/in/controllertrigger"
+                  }
+               },
+               "mode" : "scalar_constant",
+               "path" : "/user/hand/right/input/trigger"
             }
          ]
       },

@@ -1,8 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Effects\ImageEffects\Scripts\ColorCorrectionCurves.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Julia\source.cs">
     <Files>
-      <File FileName="Assets\Standard Assets\Effects\ImageEffects\Scripts\ColorCorrectionCurves.cs" Line="62" Column="1" />
+      <File FileName="Assets\Julia\sonic_controller.cs" Line="1" Column="1" />
+      <File FileName="Assets\Julia\InfoWindow.cs" Line="37" Column="1" />
+      <File FileName="Assets\Julia\source.cs" Line="248" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

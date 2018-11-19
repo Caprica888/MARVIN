@@ -22,15 +22,13 @@ public class source : MonoBehaviour {
 
     private Boolean debug = false;
 
-    private String[][] rawData;
+	private Dictionary<String,Dictionary<float,float>> attenConstants = new Dictionary<String,Dictionary<float,float>>();
 
     // Use this for initialization
     void Start () {
 
         readCSV();
        
-  
-
         sourceParticles = GetComponentInChildren<ParticleSystem>();
         sourceLight = GetComponentInChildren<Light>();
 
@@ -48,6 +46,19 @@ public class source : MonoBehaviour {
 
                 particleTypes[2] = true;
                 particleEnergies[2] = 1332.5;
+
+                particleTypes[1] = true;
+                particleEnergies[1] = 1491.3;
+
+                break;
+
+            case "Cs-137":
+
+                particleTypes[1] = true;
+                particleEnergies[1] = 1175.62;
+
+                particleTypes[2] = true;
+                particleEnergies[2] = 661.66;
 
                 break;
 
@@ -111,23 +122,23 @@ public class source : MonoBehaviour {
 
             float surfaceArea = 0.007184f * Mathf.Pow(weight , 0.425f) * Mathf.Pow(height , 0.725f) / doseReceptors.Length; //In m^2
 
-            for ( int i = 0 ; i < doseReceptors.Length ; i++ ) {
 
-                activity += getAttenuatedActivity( sourceActivity * 37000000 , transform.position , doseReceptors[i]); //37000000 is mCi to Bq
-
-                activity = ( ( activity ) / ( 4 * Math.PI * Math.Pow(( doseReceptors[i] - transform.position ).magnitude , 2) ) ) * surfaceArea;
-                
-            }
-
-            double averageActivity = activity / doseReceptors.Length; //in units s^-1
-        
-            double doseRate = 0;
-
-
+			double doseRate = 0;
 
             for ( int i = 0 ; i < particleTypes.Length ; i++ ) {
 
                 if ( particleTypes[ i ] ) {
+
+					for ( int k = 0 ; k < doseReceptors.Length ; k++ ) {
+
+						activity += getAttenuatedActivity( sourceActivity * 37000000 , transform.position , doseReceptors[k] , ( float ) particleEnergies[ i ] ); //37000000 is mCi to Bq
+
+						activity = ( ( activity ) / ( 4 * Math.PI * Math.Pow(( doseReceptors[k] - transform.position ).magnitude , 2) ) ) * surfaceArea;
+
+					}
+
+					double averageActivity = activity / doseReceptors.Length; //in units s^-1
+
 
                     //averageActivity * particleEnergies[ i ] yields keV/s
                     //keV/s / 6241506479963235 yields j/s, conversion factor
@@ -243,8 +254,12 @@ public class source : MonoBehaviour {
 
     }
 
-    //Work in progress my dudes
-    private double getAttenuatedActivity( double initialActivity , Vector3 origin , Vector3 destination ) {
+
+	/**
+	 * 
+	 * particleEnergy is the energy of the radiation packet, in keV
+	 * */
+	private double getAttenuatedActivity( double initialActivity , Vector3 origin , Vector3 destination , float particleEnergy ) {
 
         double attenuatedActivity = initialActivity;
 
@@ -286,11 +301,70 @@ public class source : MonoBehaviour {
 
                 }
                 
-                float materialAttenuationConstant = 10;//Please change later to match material
+                
+				string assumed = "Concrete (Ordinary)";
+				string renderName = shield.GetComponent<Renderer> ().material.name;
+                renderName = renderName.Replace( " (Instance)" , "" );
 
-                attenuatedActivity = attenuate(attenuatedActivity, materialAttenuationConstant , thickness);
+                if (!attenConstants.ContainsKey (renderName)) {
+
+					assumed = renderName;
+
+				}
+
+                if (attenConstants.ContainsKey (assumed)) {
+
+					Dictionary<float,float> attenData = attenConstants [assumed];
+
+					float materialAttenuationConstant = 10; //Concrete for 1000 keV, uses this if it cant find a useful energy
+
+                    List<float> keyList = new List<float>(attenData.Keys);
+
+					if ( particleEnergy < keyList[ 0 ] ) { //If the particle energy is below the lowest energy
+
+                        //y = mx + b
+                        float m = ( attenData[keyList[1]] - attenData[keyList[0]] ) / ( keyList[1] - keyList[0] );
+                        float b = attenData[keyList[1]] - ( m * keyList[1] );
+
+                        materialAttenuationConstant = ( m * particleEnergy ) + b;
+
+                    }
+                    else if ( particleEnergy > keyList[ attenData.Keys.Count - 1 ] ) { //If the particle energy is larger than the highest particle energy
+
+                        //y = mx + b
+                        float m = ( attenData[keyList[attenData.Keys.Count - 2]] - attenData[keyList[attenData.Keys.Count - 1]] ) / ( keyList[attenData.Keys.Count - 2] - keyList[attenData.Keys.Count - 1] );
+                        float b = attenData[keyList[attenData.Keys.Count - 1]] - ( m * keyList[attenData.Keys.Count - 1] );
+
+                        materialAttenuationConstant = ( m * particleEnergy ) + b;
+
+                    }
+                    else { //Particle energy is somewhere in known particle energy range
+
+                        for ( int k = 1 ; k < attenData.Keys.Count - 2 ; k++ ) {
+
+                            if ( particleEnergy>= keyList[ k ] && particleEnergy <= keyList[ k + 1 ] ) {
+
+                                //y = mx + b
+                                float m =  ( attenData[keyList[k + 1] ]- attenData[keyList[k]] ) / ( keyList[k + 1] - keyList[k] );
+                                float b = attenData[keyList[k]] - ( m * keyList[k] );
+
+                                materialAttenuationConstant = ( m * particleEnergy ) + b;
+
+                                break;
+
+                            }
+
+
+                        }
+
+                    }
+                    
+					attenuatedActivity = attenuate(attenuatedActivity, materialAttenuationConstant , thickness);
+
+				}
+
                 origin = furthestPoint;
-
+            
             }
 
         }
@@ -373,14 +447,54 @@ public class source : MonoBehaviour {
 
     private void readCSV() {
 
-        // String fileData = System.IO.File.ReadAllText("Assets/Julia/Data.csv");
-        // String[] lines = fileData.Split("\n".ToCharArray());
+		String fileData = System.IO.File.ReadAllText("Assets/Julia/Attenuation Coefficients - All.csv");
+        String[] lines = fileData.Split("\n".ToCharArray());
+        
+        if ( lines.Length > 0 ) {
 
-        // if ( lines.Length > 0 ) {
+			int n = lines [0].Split (",".ToCharArray ()).Length;
+			int j = lines.Length;
 
-        //rawData = new String[lines[0].Split(",".ToCharArray()).Length ][ lines.Length];
+        	string[,] rawData = new string[ n , j ];
 
-        //}
+			for (int y = 0; y < lines.Length; y++) {
+
+				for ( int x = 0 ; x < lines[ y ].Split(",".ToCharArray()).Length ; x++ ){
+
+					rawData [x, y] = lines [y].Split (",".ToCharArray ()) [x];
+
+				}
+
+			}
+
+            
+            for (int y = 1; y < j; y++) {
+
+                if (rawData [0, y] != "") {
+
+					if (!attenConstants.ContainsKey (rawData [0, y])) {
+                        
+                        attenConstants.Add( rawData [0, y] , new Dictionary<float,float>() );
+
+					}
+
+
+                    if ( !attenConstants[rawData[0 , y]].ContainsKey(float.Parse(rawData[2 , y])) ) {
+
+                        //2 is for column Energy (kEV)
+                        //5 is for column Linear Attenuation Coeffficient(m-1)
+                        attenConstants[rawData[0 , y]].Add(float.Parse(rawData[2 , y]) , float.Parse(rawData[5 , y]));
+
+                    }
+
+
+				}
+
+			}
+            
+
+        }
+
 
     }
 
