@@ -12,7 +12,6 @@ public class UIHologram : MonoBehaviour {
     public Button closeButton, extendButton;
     public List<string> text = new List<string>();
     public bool isActive = false;   //  is the UI in the world?
-    public float displayHeight; //  how high from the spawn point the plane should be
     public float extensionDistance = 0.0f; //  how far from the origin of the main Holo UI?
     public float sizeModifier = 1.9f;   //  used to help modify the dynamic size of the holo-plane
     public float sizeModifierReducer = 0.4f;
