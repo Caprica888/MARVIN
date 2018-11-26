@@ -494,7 +494,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 58982321}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6cef42411dc8e4f418d5af382608568e, type: 3}
   m_Name: 
@@ -851,7 +851,7 @@ Transform:
   m_LocalScale: {x: 3.4244404, y: 3.4244413, z: 3.4244404}
   m_Children: []
   m_Father: {fileID: 699999083}
-  m_RootOrder: 45
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: -203.72699, z: 0}
 --- !u!1001 &122058960
 Prefab:
@@ -3161,7 +3161,7 @@ Transform:
   m_LocalScale: {x: 5.1366596, y: 5.136662, z: 5.1366596}
   m_Children: []
   m_Father: {fileID: 699999083}
-  m_RootOrder: 46
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &496682581
 MeshRenderer:
@@ -4308,6 +4308,7 @@ Transform:
   - {fileID: 579205933}
   - {fileID: 103210251}
   - {fileID: 1304191230}
+  - {fileID: 116351192}
   - {fileID: 1841904068}
   - {fileID: 163073318}
   - {fileID: 1854199954}
@@ -4325,6 +4326,7 @@ Transform:
   - {fileID: 1425425537}
   - {fileID: 1436139978}
   - {fileID: 1274071997}
+  - {fileID: 496682580}
   - {fileID: 279062924}
   - {fileID: 512756992}
   - {fileID: 1404684134}
@@ -4345,11 +4347,9 @@ Transform:
   - {fileID: 935123361}
   - {fileID: 1014655441}
   - {fileID: 696774048}
+  - {fileID: 1334685850}
   - {fileID: 745881777}
   - {fileID: 915893146}
-  - {fileID: 116351192}
-  - {fileID: 496682580}
-  - {fileID: 1334685850}
   - {fileID: 1680790861}
   - {fileID: 324089151}
   - {fileID: 279239837}
@@ -4366,17 +4366,17 @@ Transform:
   - {fileID: 1665653065}
   - {fileID: 425916377}
   - {fileID: 1834174460}
+  - {fileID: 1228973643}
   - {fileID: 253910759}
   - {fileID: 382566991}
+  - {fileID: 2033362229}
   - {fileID: 1204187250}
   - {fileID: 650677091}
+  - {fileID: 1050088727}
   - {fileID: 980709450}
+  - {fileID: 1339657441}
   - {fileID: 958208232}
   - {fileID: 728322251}
-  - {fileID: 2033362229}
-  - {fileID: 1228973643}
-  - {fileID: 1050088727}
-  - {fileID: 1339657441}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7905,7 +7905,7 @@ Transform:
   m_LocalScale: {x: 5.1366596, y: 5.136662, z: 5.1366596}
   m_Children: []
   m_Father: {fileID: 699999083}
-  m_RootOrder: 47
+  m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1334685851
 MeshRenderer:
